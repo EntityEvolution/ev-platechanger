@@ -1,0 +1,74 @@
+@font-face {
+    font-family: def;
+    src: url(../fonts/SquadaOne-Regular.ttf);
+    font-display: swap;
+}
+
+@font-face {
+    font-family: def2;
+    src: url(../fonts/Dosis-Medium.ttf);
+    font-display: swap;
+}
+
+*:focus {
+    outline: none;
+}
+
+body {
+    overflow: hidden;
+}
+
+.wrapper {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: 0.5s;
+    opacity: 0;
+}
+
+.container {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    width: 28%;
+    height: 22%;
+    border-radius: 1.6vh;
+    border: 1.2vh solid #373737;
+
+    background-color: #dddddd;
+}
+
+.container span {
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-family: def;
+    text-transform: uppercase;
+    font-size: 5.0vh;
+    margin-top: 1.0%;
+    width: 100%;
+    height: 15%;
+}
+
+.input-text {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    font-size: 10vh;
+    width: 90%;
+    height: 50%;
+    border: none;
+    background-color: #dddddd;
+    margin-bottom: 5%;
+    font-family: def2;
+    text-transform: uppercase;
+}
