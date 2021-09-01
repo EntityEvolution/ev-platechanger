@@ -1,37 +1,42 @@
 RegisterNetEvent('ev:getPlate', function(plate, currentPlate)
     local source <const> = source
     local xPlayer = ESX.GetPlayerFromId(source)
-    if veh == 0 or not currentPlate then
-        return xPlayer.showNotification('You have to stay in your vehicle!')
-    elseif plate:len() > 6 then
-        return xPlayer.showNotification('Somehow you achieved to pass more than 6 chars')
-    end
-    MySQL.Async.fetchScalar('SELECT * FROM owned_vehicles WHERE plate = @plate', {
-        ['@plate'] = plate
-    }, function(result)
-        if not result then
-            MySQL.Async.fetchAll('SELECT plate, vehicle FROM owned_vehicles WHERE plate = @plate', {
-                ['plate'] = currentPlate
-            },function(result)
-                if result[1] ~= nil then
-                    local vehicle = json.decode(result[1].vehicle)
-                    local oldPlate = vehicle.plate
-                    vehicle.plate = plate
-                    MySQL.Async.execute('UPDATE owned_vehicles SET plate = @newplate, vehicle = @vehicle WHERE plate = @oldplate AND owner=@identifier', {
-                        ['newplate'] = plate,
-                        ['oldplate'] = oldPlate, 
-                        ['identifier'] = xPlayer.identifier,
-                        ['vehicle'] = json.encode(vehicle)
-                    })
-                    SetVehicleNumberPlateText(GetVehiclePedIsIn(GetPlayerPed(source)), plate)
-                    xPlayer.removeInventoryItem('licenseplate', 1)
-                    xPlayer.showNotification('Your new plate has been set')
-                end
-            end)
-        else
-            xPlayer.showNotification('Plate already exists')
+    if xPlayer then
+        if veh == 0 or not currentPlate then
+            return xPlayer.showNotification('You have to stay in your vehicle!')
+        elseif plate:len() > 6 then
+            return xPlayer.showNotification('Somehow you achieved to pass more than 6 chars')
         end
-    end)
+        MySQL.Async.fetchScalar('SELECT * FROM owned_vehicles WHERE plate = @plate', {
+            ['@plate'] = plate
+        }, function(result)
+            if not result then
+                MySQL.Async.fetchAll('SELECT plate, vehicle FROM owned_vehicles WHERE plate = @plate', {
+                    ['plate'] = currentPlate
+                },function(result)
+                    if result[1] ~= nil then
+                        local vehicle = json.decode(result[1].vehicle)
+                        if not vehicle.plate then
+                            return xPlayer.showNotification('Your vehicle appears to be missing a real plate')
+                        end
+                        local oldPlate = vehicle.plate
+                        vehicle.plate = plate
+                        MySQL.Async.execute('UPDATE owned_vehicles SET plate = @newplate, vehicle = @vehicle WHERE plate = @oldplate AND owner=@identifier', {
+                            ['newplate'] = plate,
+                            ['oldplate'] = oldPlate, 
+                            ['identifier'] = xPlayer.identifier,
+                            ['vehicle'] = json.encode(vehicle)
+                        })
+                        SetVehicleNumberPlateText(GetVehiclePedIsIn(GetPlayerPed(source)), plate)
+                        xPlayer.removeInventoryItem('licenseplate', 1)
+                        xPlayer.showNotification('Your new plate has been set')
+                    end
+                end)
+            else
+                xPlayer.showNotification('Plate already exists')
+            end
+        end)
+    end
 end)
 
 -- ESX Stuff
