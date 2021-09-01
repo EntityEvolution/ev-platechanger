@@ -6,7 +6,7 @@ lua54 'yes'
 
 description 'A simple NUI plate creator by Entity Evolution'
 
-version '1.0.0'
+version '2.0.0'
 
 shared_scripts {
     'config.lua',

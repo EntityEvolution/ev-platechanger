@@ -17,6 +17,7 @@ this.window.addEventListener('load', e => {
 
             case 'key':
                 currentKey = e.data.key;
+                doc.getElementById('title').textContent = e.data.title
             break;
         }
     })
