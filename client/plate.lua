@@ -1,25 +1,24 @@
 local isOpen = false
 
-CreateThread(function()
-    while isOpen do
-        DisableControlAction(0, Config.Key, true)
-    end
-end)
-
 -- NUI Callback
 RegisterNUICallback('getPlateText', function(data, cb)
     if isOpen then
-        if data:len() > 0 then
-            if data then
-                SendNUIMessage({action = 'hide'})
-                SetNuiFocus(0, 0)
-                TriggerServerEvent('ev:getPlate', data, GetVehicleNumberPlateText(GetVehiclePedIsIn(PlayerPedId(), false)):match( "^%s*(.-)%s*$" ))
-                isOpen = false
+        local ped = PlayerPedId()
+        if IsPedInAnyVehicle(ped, false) then
+            if data:len() > 0 then
+                if data then
+                    SendNUIMessage({action = 'hide'})
+                    SetNuiFocus(0, 0)
+                    TriggerServerEvent('ev:getPlate', data, GetVehicleNumberPlateText(GetVehiclePedIsIn(ped, false)):match( "^%s*(.-)%s*$" ))
+                    isOpen = false
+                else
+                    ESX.ShowNotification('You do not own this car')
+                end
             else
-                ESX.ShowNotification('You do not own this car')
+                ESX.ShowNotification('Plate needs at least 1 character')
             end
         else
-            ESX.ShowNotification('Plate needs at least 1 character')
+            ESX.ShowNotification('You somehow left the vehicle')
         end
     end
     cb({})
