@@ -1,4 +1,14 @@
+local stateEsx =  GetResourceState('es_extended') == 'started' or GetResourceState('extendedmode') == 'started'
+local stateQbus =  GetResourceState('qb-core') == 'started'
 local isOpen = false
+
+local function showNoti(message)
+    if stateEsx then
+        ESX.ShowNotification(message)
+    elseif stateQbus then
+        QBCore.Functions.Notify(message)
+    end
+end
 
 -- NUI Callback
 RegisterNUICallback('getPlateText', function(data, cb)
@@ -9,7 +19,7 @@ RegisterNUICallback('getPlateText', function(data, cb)
                 if data then
                     for i=0, #Config.Blacklist, 1 do
                         if Config.Blacklist[i] == data then
-                            return ESX.ShowNotification('You tried to set a plate with a bad word: ' .. data)
+                            return showNoti('You tried to set a plate with a bad word: ' .. data)
                         end
                     end
                     if data:len() > 0 then
@@ -18,16 +28,16 @@ RegisterNUICallback('getPlateText', function(data, cb)
                         TriggerServerEvent('ev:getPlate', data, GetVehicleNumberPlateText(GetVehiclePedIsIn(ped, false)):match( "^%s*(.-)%s*$" ))
                         isOpen = false
                     else
-                        ESX.ShowNotification(Config.Locales.ErrorCharsMin)
+                        showNoti(Config.Locales.ErrorCharsMin)
                     end
                 else
-                    ESX.ShowNotification(Config.Locales.Error)
+                    showNoti(Config.Locales.Error)
                 end
             else
-                ESX.ShowNotification(Config.Locales.ErrorDriver) 
+                showNoti(Config.Locales.ErrorDriver) 
             end
         else
-            ESX.ShowNotification(Config.Locales.ErrorVehicle)
+            showNoti(Config.Locales.ErrorVehicle)
         end
     end
     cb({})
@@ -52,10 +62,10 @@ RegisterNetEvent('ev:getPlateNui', function()
                 SendNUIMessage({action = 'show'})
                 SetNuiFocus(1, 1)
             else
-                ESX.ShowNotification(Config.Locales.ErrorDriver) 
+                showNoti(Config.Locales.ErrorDriver) 
             end
         else
-            ESX.ShowNotification(Config.Locales.ErrorWalking)
+            showNoti(Config.Locales.ErrorWalking)
         end
     end
 end)

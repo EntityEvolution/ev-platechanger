@@ -1,7 +1,7 @@
 local stateEsx =  GetResourceState('es_extended') == 'started' or GetResourceState('extendedmode') == 'started'
 local stateQbus =  GetResourceState('qb-core') == 'started'
 
-if stateESX then
+if stateEsx then
     RegisterNetEvent('ev:getPlate', function(plate, currentPlate)
         local source <const> = source
         local xPlayer = ESX.GetPlayerFromId(source)
