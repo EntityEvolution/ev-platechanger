@@ -86,7 +86,8 @@ AddEventHandler('onClientResourceStart', function(resourceName)
         SendNUIMessage({
             action = 'key',
             key = Config.JsKey,
-            title = Config.PlateHeader
+            title = Config.PlateHeader,
+            chars = Config.EightChars
         })
     end
 end)

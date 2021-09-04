@@ -17,7 +17,12 @@ this.window.addEventListener('load', e => {
 
             case 'key':
                 currentKey = e.data.key;
-                doc.getElementById('title').textContent = e.data.title
+                doc.getElementById('title').textContent = e.data.title;
+                console.log(e.data.chars)
+                if (e.data.chars) {
+                    document.getElementById("text").maxLength = '8'
+                    document.getElementsByName('text')[0].placeholder='ABCD1234';
+                }
             break;
         }
     })
