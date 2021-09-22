@@ -1,6 +1,7 @@
 const doc = document;
 const plate = doc.getElementById('wrapper');
 let currentKey = "";
+let usingButtons = false;
 
 this.window.addEventListener('load', e => {
     window.addEventListener('message', e => {
@@ -8,17 +9,23 @@ this.window.addEventListener('load', e => {
             case 'show':
                 plate.style.display = 'flex';
                 plate.style.opacity = '1';
+                if (!usingButtons) {
+                    doc.getElementById('btns').style.display = 'none';
+                }
             break;
 
             case 'hide':
                 plate.style.display = 'none';
                 plate.style.opacity = '0';
+                if (!usingButtons) {
+                    doc.getElementById('btns').style.display = 'none';
+                }
             break;
 
             case 'key':
+                usingButtons = e.data.buttons;
                 currentKey = e.data.key;
                 doc.getElementById('title').textContent = e.data.title;
-                console.log(e.data.chars)
                 if (e.data.chars) {
                     document.getElementById("text").maxLength = '8'
                     document.getElementsByName('text')[0].placeholder='ABCD1234';
@@ -27,6 +34,10 @@ this.window.addEventListener('load', e => {
         }
     })
 })
+
+doc.getElementById('one').addEventListener('click', () => fetchNUI('getPlateText', doc.getElementById('text').value.toUpperCase()));
+
+doc.getElementById('two').addEventListener('click', () => fetchNUI('close'));
 
 const fetchNUI = async (cbname, data) => {
     const options = {
