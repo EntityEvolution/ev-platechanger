@@ -62,7 +62,7 @@ RegisterNetEvent('ev:getPlateNui', function()
                 SendNUIMessage({action = 'show'})
                 SetNuiFocus(1, 1)
             else
-                showNoti(Config.Locales.ErrorDriver) 
+                showNoti(Config.Locales.ErrorDriver)
             end
         else
             showNoti(Config.Locales.ErrorWalking)
@@ -76,7 +76,9 @@ AddEventHandler('playerSpawned', function()
     SendNUIMessage({
         action = 'key',
         key = Config.JsKey,
-        title = Config.PlateHeader
+        title = Config.PlateHeader,
+        chars = Config.EightChars,
+        buttons = Config.useButtons
     })
 end)
 
@@ -87,7 +89,8 @@ AddEventHandler('onClientResourceStart', function(resourceName)
             action = 'key',
             key = Config.JsKey,
             title = Config.PlateHeader,
-            chars = Config.EightChars
+            chars = Config.EightChars,
+            buttons = Config.useButtons
         })
     end
 end)

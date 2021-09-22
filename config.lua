@@ -2,6 +2,7 @@ Config = {}
 Config.JsKey = "Insert"
 Config.PlateHeader = "SAN ANDREAS"
 Config.EightChars = true
+Config.useButtons = true
 Config.MaxChars = 8 -- Max is 8
 
 Config.Locales = {

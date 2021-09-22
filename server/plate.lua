@@ -92,16 +92,16 @@ elseif stateQbus then
                     return TriggerClientEvent('QBCore:Notify', source, 'You tried to set a plate with a bad word: ' .. plate)
                 end
             end
-            exports['ghmattimysql']:execute('SELECT plate FROM player_vehicles WHERE plate = @plate AND citizenid = @citizenid', {
+            exports.oxmysql:fetch('SELECT plate FROM player_vehicles WHERE plate = @plate AND citizenid = @citizenid', {
                 ['plate'] = currentPlate,
                 ['citizenid'] = xPlayer.PlayerData.citizenid
             }, function(result)
                 if result[1] then
-                    exports['ghmattimysql']:execute('SELECT * FROM player_vehicles WHERE plate = @plate', {
+                    exports.oxmysql:fetch('SELECT * FROM player_vehicles WHERE plate = @plate', {
                         ['plate'] = plate
                     }, function(exist)
                         if not exist[1] then
-                            exports['ghmattimysql']:execute('SELECT plate, mods FROM player_vehicles WHERE plate = @plate', {
+                            exports.oxmysql:fetch('SELECT plate, mods FROM player_vehicles WHERE plate = @plate', {
                                 ['plate'] = currentPlate
                             },function(currentVehicle)
                                 if currentVehicle[1] then
@@ -111,7 +111,7 @@ elseif stateQbus then
                                     end
                                     local oldPlate = vehicle.plate
                                     vehicle.plate = plate
-                                    exports['ghmattimysql']:execute('UPDATE player_vehicles SET plate = @newplate, mods = @vehicle WHERE plate = @oldplate AND citizenid=@citizenid', {
+                                    exports.oxmysql:execute('UPDATE player_vehicles SET plate = @newplate, mods = @vehicle WHERE plate = @oldplate AND citizenid=@citizenid', {
                                         ['newplate'] = plate,
                                         ['oldplate'] = oldPlate,
                                         ['citizenid'] = xPlayer.PlayerData.citizenid,
@@ -139,7 +139,7 @@ elseif stateQbus then
         local xPlayer = QBCore.Functions.GetPlayer(source)
         local vehicle = GetVehiclePedIsIn(GetPlayerPed(source))
         if vehicle ~= 0 then
-            exports['ghmattimysql']:execute('SELECT plate FROM player_vehicles WHERE plate = @plate AND citizenid = @citizenid', {
+            exports.oxmysql:fetch('SELECT plate FROM player_vehicles WHERE plate = @plate AND citizenid = @citizenid', {
                 ['plate'] = GetVehicleNumberPlateText(vehicle):match( "^%s*(.-)%s*$" ),
                 ['citizenid'] = xPlayer.PlayerData.citizenid
             }, function(result)
